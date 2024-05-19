@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <form action="">
+        <input type="text" name="" id="imgurl" placeholder="imgurl">
+        <input type="text" name="" id="title" placeholder="title">
+        <input type="text" name="" id="description" placeholder="description">
+        <button>add</button>
+    </form>
+
+    <script>
+        const imgurl = document.querySelector("#imgurl")
+        const title = document.querySelector("#title")
+        const description = document.querySelector("#description")
+        const form = document.querySelector("form")
+
+        form.addEventListener("submit",function (e) {
+            e.preventDefault()
+            createProduct(imgurl.value,title.value,description.value)
+            
+        })
+        
+
+        async function createProduct(image,title,description) {
+            const res = await fetch("http://localhost:3000/myApi",{
+                method:"post",
+                headers:{
+                    "Content-Type": "application/json",
+                },
+                body:JSON.stringify({
+                    image,
+                    title,
+                    description,
+                })
+            })
+
+        }
+
+    </script>
+</body>
+</html>

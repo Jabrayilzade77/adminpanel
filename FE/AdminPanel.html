@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+      }
+
+      td,
+      th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+      }
+
+      tr:nth-child(even) {
+        background-color: #dddddd;
+      }
+      .img {
+        width: 100px;
+        height: 100px;
+      }
+    </style>
+  </head>
+  <body>
+    <table>
+      <thead>
+        <tr>
+          <th>img</th>
+          <th>title</th>
+          <th>description</th>
+          <th>option</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <script>
+      const tbody = document.querySelector("tbody");
+
+      function addCard(id, img, title, description) {
+        const tr = document.createElement("tr");
+        tr.innerHTML += `
+          <td>
+            <img
+              src="${img}"
+              alt=""
+              class="img"
+            />
+          </td>
+          <td>${title}</td>
+          <td>${description}</td>
+          <td>
+            <button class="del">delete</button>
+            <button class="edit"><a href="./update.html#${id}">edit</a>
+</button>
+          </td>
+      `;
+
+        const del = tr.querySelector(".del");
+        del.onclick = () => {
+          deleteProductById(id);
+        };
+        tbody.appendChild(tr);
+      }
+
+      async function getAllProducts() {
+        const res = await fetch("http://localhost:3000/myApi");
+        const data = await res.json();
+        return data;
+      }
+
+      async function generateUI() {
+        const data = await getAllProducts();
+        data.forEach((item) =>
+          addCard(item.id, item.image, item.title, item.description)
+        );
+      }
+
+      async function deleteProductById(id) {
+        const res = await fetch("http://localhost:3000/myApi/" + id, {
+          method: "delete",
+        });
+        const data = res.json();
+        return data;
+      }
+      generateUI();
+    </script>
+  </body>
+</html>

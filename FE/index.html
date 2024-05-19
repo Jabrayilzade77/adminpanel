@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .container {
+        display: flex;
+        flex-wrap: wrap;
+      }
+      .card {
+        width: 270px;
+        min-height: 200px;
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border: 1px solid black;
+        margin: 10px;
+      }
+      .description{
+        min-width: 240px;
+      }
+      .card img {
+        width: 200px;
+        height: 200px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+     
+    </div>
+
+    <script>
+      const container = document.querySelector(".container");
+
+      function addCard(img, title, description) {
+        container.innerHTML += `
+    <div class="card">
+        <img
+          src="${img}"
+          alt=""
+        />
+        <div class="title">${title}</div>
+        <div class="description">${description}</div>
+      </div>
+    `;
+      }
+
+      async function getAllProducts() {
+        const res = await fetch("http://localhost:3000/myApi");
+        const data = await res.json();
+        return data;
+      }
+
+      async function generateUI() {
+        const data = await getAllProducts();
+        data.forEach((item) =>
+          addCard(item.image, item.title, item.description)
+        );
+      }
+      generateUI();
+    </script>
+  </body>
+</html>

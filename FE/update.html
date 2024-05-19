@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <form action="">
+        <input type="text" name="" id="imgurl" placeholder="imgurl">
+        <input type="text" name="" id="title" placeholder="title">
+        <input type="text" name="" id="description" placeholder="description">
+        <button>add</button>
+    </form>
+
+    <script>
+        const imgurl = document.querySelector("#imgurl")
+        const title = document.querySelector("#title")
+        const description = document.querySelector("#description")
+        const form = document.querySelector("form")
+        const hash = window.location.hash.slice(1)
+
+        async function fillForm() {
+            const data = await getById(hash)
+            imgurl.value = data.image,
+            title.value = data.title,
+            description.value = data.description
+        }
+        
+        fillForm()
+        form.addEventListener("submit",function (e) {
+            e.preventDefault()
+            updateProduct(hash,imgurl.value,title.value,description.value)
+            
+            window.location.href = "./index.html"
+        })
+ 
+      async function getById(id) {
+        const res = await fetch("http://localhost:3000/myApi/"+id);
+        const data = await res.json();
+        return data;
+      }
+
+        async function updateProduct(id,image,title,description) {
+            const res = await fetch("http://localhost:3000/myApi/"+id,{
+                method:"put",
+                headers:{
+                    "Content-Type": "application/json",
+                },
+                body:JSON.stringify({
+                    image,
+                    title,
+                    description,
+                })
+            })
+
+        }
+
+    </script>
+</body>
+</html>
